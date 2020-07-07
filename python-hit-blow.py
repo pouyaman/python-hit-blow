@@ -33,7 +33,7 @@ ansi_colour_dict = {
 }
 
 # Choose the colour command set based on OS
-if os.name is 'nt':
+if os.name == 'nt':
     temp_dict   = win_colour_dict
 else:
     temp_dict   = ansi_colour_dict
