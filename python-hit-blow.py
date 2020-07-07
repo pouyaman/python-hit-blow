@@ -8,14 +8,47 @@ try:
 except NameError:
     pass
 
-# Let's set the colour
-os.system('color 70') # B: Gray, T:Black
+# Let's set the colours
+# Define different colour commands
+win_colour_dict = {
+    'cmd'   : 'color ',
+    'colours': {
+        'pass'  : 'A0',
+        'fail'  : '4F',
+        'start' : '30',
+        'last'  : '60',
+        'reset' : '0F'
+    }
+}
 
+ansi_colour_dict = {
+    'cmd'   : 'echo -e ',
+    'colours': {
+        'pass'  : r'"\e[38;2;0;255;0m"',
+        'fail'  : r'"\e[38;2;255;0;0m"',
+        'start' : r'"\e[38;2;0;255;255m"',
+        'last'  : r'"\e[38;2;255;255;0m"',
+        'reset' : r'"\e[38m"'
+    }
+}
 
+# Choose the colour command set based on OS
+if os.name is 'nt':
+    temp_dict   = win_colour_dict
+else:
+    temp_dict   = ansi_colour_dict
+
+# Generate the command table
+colour_dict = {}
+for colour, command in temp_dict['colours'].items():
+    colour_dict[colour] = temp_dict['cmd'] + command
+
+# Some settings for the game
 TOTAL_TURNS     = 8
 TOTAL_COLOURS   = 6
 TOTAL_CODE      = 4
 
+# Location fo the code to crack
 CODE            = []
 
 # Valid numbers
@@ -50,13 +83,23 @@ def get_input():
 
     return result
 
+def print_exit_message():
+    input("Press enter to exit...")
+    set_colour('reset')
+    exit()
+
 # Helper functions
 def big_divider():
     return "=========================================="
 def small_divider():
     return "------------------------------------------"
 
+def set_colour(colour):
+    os.system(colour_dict[colour])
+
 # Print greetings
+set_colour('start')
+
 print("Welcome to Hit & Blow!")
 print(big_divider())
 print("Guess a %i digit number."            %TOTAL_CODE)
@@ -81,6 +124,7 @@ while(turn < TOTAL_TURNS):
     # Print info
     print(small_divider())
     if(turn == TOTAL_TURNS):
+        set_colour('last')
         print("!!!LAST TURN!!!")
     else:
         print("Turn: %i" %turn)
@@ -97,13 +141,12 @@ while(turn < TOTAL_TURNS):
 
     # Did they win??
     if numbers == CODE:
+        set_colour('pass')
         print(big_divider())
         print("Code:")
         print(CODE)
         print("WON!!!")
-        os.system('color A0') # B: Green, T: Black
-        input("Press enter to exit...")
-        exit()
+        print_exit_message()
 
     # Check each digit
     for i, digit in enumerate(numbers):
@@ -118,8 +161,9 @@ while(turn < TOTAL_TURNS):
     print("Blows: %i" %blows.count(1) )
 
 # Let user know they failed :(
+set_colour('fail')
 print(big_divider())
+print("Code:")
 print(CODE)
 print("LOST!!!")
-os.system('color 4F') # B: Red, T: White
-input("Press enter to exit...")
+print_exit_message()
