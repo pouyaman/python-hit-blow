@@ -28,7 +28,7 @@ ansi_colour_dict = {
         'fail'  : r'"\e[38;2;255;0;0m"',
         'start' : r'"\e[38;2;0;255;255m"',
         'last'  : r'"\e[38;2;255;255;0m"',
-        'reset' : r'"\e[38m"'
+        'reset' : r'"\e[0m"'
     }
 }
 
