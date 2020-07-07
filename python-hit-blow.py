@@ -68,7 +68,7 @@ print("Blows: Correct colour only")
 
 # Start Loop
 turn = 0
-while(turn < TOTAL_TURNS-1):
+while(turn < TOTAL_TURNS):
     turn+=1
 
     # Setup
@@ -80,7 +80,7 @@ while(turn < TOTAL_TURNS-1):
 
     # Print info
     print(small_divider())
-    if(turn == TOTAL_TURNS-1):
+    if(turn == TOTAL_TURNS):
         print("!!!LAST TURN!!!")
     else:
         print("Turn: %i" %turn)
